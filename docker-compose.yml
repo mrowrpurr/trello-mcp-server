@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  trello-mcp-server:
+    build: .
+    container_name: trello-mcp-server
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    # MCP proxy exposes HTTP/SSE endpoints
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount config file if you want to modify it without rebuilding
+      - ./config.yml:/app/config.yml:ro
+    # For development with live reload, uncomment below:
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    # command: npx mcp-proxy --port 8080 --shell npm run dev
